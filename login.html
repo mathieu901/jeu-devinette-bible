@@ -3,65 +3,98 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jeu de Devinette</title>
+    <title>Quiz - Jeu de Questions</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             text-align: center;
             margin: 50px;
         }
-        #jeu {
-            margin-top: 20px;
-        }
-        input {
-            padding: 10px;
-            font-size: 16px;
+        #quiz-container {
+            max-width: 500px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
         }
         button {
-            padding: 10px 20px;
+            padding: 10px;
             font-size: 16px;
-            background-color: blue;
-            color: white;
-            border: none;
+            margin: 5px;
             cursor: pointer;
         }
     </style>
 </head>
 <body>
-    <h1>Jeu de Devinette</h1>
-    <p>Devine un nombre entre 1 et 100</p>
-
-    <div id="jeu">
-        <input type="number" id="guess" placeholder="Votre nombre">
-        <button onclick="verifierNombre()">Vérifier</button>
-        <p id="message"></p>
+    <h1>Quiz - Jeu de Questions</h1>
+    <div id="quiz-container">
+        <p id="question"></p>
+        <div id="reponses"></div>
+        <p id="resultat"></p>
+        <button onclick="suivant()">Question suivante</button>
+        <button onclick="quitterJeu()">Quitter</button>
     </div>
 
-    <button onclick="quitterJeu()">Quitter</button>
-
     <script>
-        let nombreMystere = Math.floor(Math.random() * 100) + 1;
+        const questions = [
+            {
+                question: "Quel est le plus grand océan du monde ?",
+                options: ["Atlantique", "Pacifique", "Indien", "Arctique"],
+                reponse: "Pacifique"
+            },
+            {
+                question: "Quelle est la capitale de la France ?",
+                options: ["Madrid", "Berlin", "Londres", "Paris"],
+                reponse: "Paris"
+            },
+            {
+                question: "Combien font 5 × 6 ?",
+                options: ["30", "25", "20", "35"],
+                reponse: "30"
+            }
+        ];
 
-        function verifierNombre() {
-            let guess = document.getElementById("guess").value;
-            let message = document.getElementById("message");
+        let indexQuestion = 0;
 
-            if (guess == nombreMystere) {
-                message.innerHTML = "Bravo ! Vous avez trouvé le nombre 🎉";
-                message.style.color = "green";
-            } else if (guess < nombreMystere) {
-                message.innerHTML = "Trop petit ! Essayez encore.";
-                message.style.color = "red";
+        function afficherQuestion() {
+            let q = questions[indexQuestion];
+            document.getElementById("question").innerText = q.question;
+            let reponsesDiv = document.getElementById("reponses");
+            reponsesDiv.innerHTML = "";
+
+            q.options.forEach(option => {
+                let bouton = document.createElement("button");
+                bouton.innerText = option;
+                bouton.onclick = () => verifierReponse(option);
+                reponsesDiv.appendChild(bouton);
+            });
+
+            document.getElementById("resultat").innerText = "";
+        }
+
+        function verifierReponse(reponse) {
+            if (reponse === questions[indexQuestion].reponse) {
+                document.getElementById("resultat").innerText = "Bonne réponse ! ✅";
             } else {
-                message.innerHTML = "Trop grand ! Essayez encore.";
-                message.style.color = "red";
+                document.getElementById("resultat").innerText = "Mauvaise réponse ❌";
+            }
+        }
+
+        function suivant() {
+            indexQuestion++;
+            if (indexQuestion < questions.length) {
+                afficherQuestion();
+            } else {
+                document.getElementById("quiz-container").innerHTML = "<h2>Quiz terminé ! 🎉</h2>";
             }
         }
 
         function quitterJeu() {
-            localStorage.removeItem("utilisateur"); // Supprime la connexion
-            window.location.href = "index.html"; // Retour à la connexion
+            window.location.href = "index.html"; // Retour à la page de connexion
         }
+
+        afficherQuestion();
     </script>
 </body>
 </html>
