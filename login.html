@@ -1,67 +1,67 @@
-// Vérifier si l'utilisateur est connecté, sinon rediriger vers la page de connexion
-if (!localStorage.getItem("loggedIn")) {
-    window.location.href = "login.html";
-}
-
-// Liste des devinettes bibliques (tu peux en ajouter autant que tu veux)
-const questions = [
-    { question: "Qui a construit l'arche ?", reponse: "Noé" },
-    { question: "Qui a séparé la mer Rouge ?", reponse: "Moïse" },
-    { question: "Qui a trahi Jésus ?", reponse: "Judas" },
-    { question: "Quel roi a écrit de nombreux psaumes ?", reponse: "David" },
-    { question: "Combien de jours Dieu a-t-il pris pour créer le monde ?", reponse: "6" }
-];
-
-let score = localStorage.getItem("score") ? parseInt(localStorage.getItem("score")) : 0;
-let indexQuestion = 0;
-
-// Sélection des éléments HTML
-const questionElement = document.getElementById("question");
-const reponseInput = document.getElementById("reponse");
-const messageElement = document.getElementById("message");
-
-// Afficher la première question
-questionElement.textContent = questions[indexQuestion].question;
-
-function verifierReponse() {
-    let reponseUtilisateur = reponseInput.value.trim(); // Récupérer la réponse entrée
-    let reponseCorrecte = questions[indexQuestion].reponse;
-
-    if (reponseUtilisateur.toLowerCase() === reponseCorrecte.toLowerCase()) {
-        score += 10; // Ajouter 10 points par bonne réponse
-        localStorage.setItem("score", score); // Sauvegarder le score
-        messageElement.textContent = "Bonne réponse ! +10 points";
-        messageElement.style.color = "green";
-
-        // Passer à la question suivante
-        indexQuestion++;
-        if (indexQuestion < questions.length) {
-            questionElement.textContent = questions[indexQuestion].question;
-            reponseInput.value = ""; // Effacer la réponse
-        } else {
-            messageElement.textContent = "Félicitations ! Vous avez terminé toutes les devinettes.";
-            document.getElementById("reponse").style.display = "none";
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jeu de Devinette</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
         }
-    } else {
-        messageElement.textContent = "Mauvaise réponse, essayez encore !";
-        messageElement.style.color = "red";
-    }
-}
+        #jeu {
+            margin-top: 20px;
+        }
+        input {
+            padding: 10px;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: blue;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Jeu de Devinette</h1>
+    <p>Devine un nombre entre 1 et 100</p>
 
-// Fonction pour afficher le score
-function afficherScore() {
-    alert("Votre score actuel est : " + localStorage.getItem("score") + " points");
-}
+    <div id="jeu">
+        <input type="number" id="guess" placeholder="Votre nombre">
+        <button onclick="verifierNombre()">Vérifier</button>
+        <p id="message"></p>
+    </div>
 
-// Fonction pour retirer les gains (exemple : 100 points = 1€)
-function retirerGains() {
-    let points = parseInt(localStorage.getItem("score"));
-    let montant = points / 100; // 100 points = 1€
+    <button onclick="quitterJeu()">Quitter</button>
 
-    if (montant >= 1) {
-        alert("Vous pouvez retirer : " + montant.toFixed(2) + "€");
-        localStorage.setItem("score", 0); // Réinitialiser le score après le retrait
-    } else {
-        alert("Vous devez avoir au moins 100 points pour retirer.");
-    }
-}
+    <script>
+        let nombreMystere = Math.floor(Math.random() * 100) + 1;
+
+        function verifierNombre() {
+            let guess = document.getElementById("guess").value;
+            let message = document.getElementById("message");
+
+            if (guess == nombreMystere) {
+                message.innerHTML = "Bravo ! Vous avez trouvé le nombre 🎉";
+                message.style.color = "green";
+            } else if (guess < nombreMystere) {
+                message.innerHTML = "Trop petit ! Essayez encore.";
+                message.style.color = "red";
+            } else {
+                message.innerHTML = "Trop grand ! Essayez encore.";
+                message.style.color = "red";
+            }
+        }
+
+        function quitterJeu() {
+            localStorage.removeItem("utilisateur"); // Supprime la connexion
+            window.location.href = "index.html"; // Retour à la connexion
+        }
+    </script>
+</body>
+</html>
