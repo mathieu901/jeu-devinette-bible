@@ -1,0 +1,67 @@
+// Vérifier si l'utilisateur est connecté, sinon rediriger vers la page de connexion
+if (!localStorage.getItem("loggedIn")) {
+    window.location.href = "login.html";
+}
+
+// Liste des devinettes bibliques (tu peux en ajouter autant que tu veux)
+const questions = [
+    { question: "Qui a construit l'arche ?", reponse: "Noé" },
+    { question: "Qui a séparé la mer Rouge ?", reponse: "Moïse" },
+    { question: "Qui a trahi Jésus ?", reponse: "Judas" },
+    { question: "Quel roi a écrit de nombreux psaumes ?", reponse: "David" },
+    { question: "Combien de jours Dieu a-t-il pris pour créer le monde ?", reponse: "6" }
+];
+
+let score = localStorage.getItem("score") ? parseInt(localStorage.getItem("score")) : 0;
+let indexQuestion = 0;
+
+// Sélection des éléments HTML
+const questionElement = document.getElementById("question");
+const reponseInput = document.getElementById("reponse");
+const messageElement = document.getElementById("message");
+
+// Afficher la première question
+questionElement.textContent = questions[indexQuestion].question;
+
+function verifierReponse() {
+    let reponseUtilisateur = reponseInput.value.trim(); // Récupérer la réponse entrée
+    let reponseCorrecte = questions[indexQuestion].reponse;
+
+    if (reponseUtilisateur.toLowerCase() === reponseCorrecte.toLowerCase()) {
+        score += 10; // Ajouter 10 points par bonne réponse
+        localStorage.setItem("score", score); // Sauvegarder le score
+        messageElement.textContent = "Bonne réponse ! +10 points";
+        messageElement.style.color = "green";
+
+        // Passer à la question suivante
+        indexQuestion++;
+        if (indexQuestion < questions.length) {
+            questionElement.textContent = questions[indexQuestion].question;
+            reponseInput.value = ""; // Effacer la réponse
+        } else {
+            messageElement.textContent = "Félicitations ! Vous avez terminé toutes les devinettes.";
+            document.getElementById("reponse").style.display = "none";
+        }
+    } else {
+        messageElement.textContent = "Mauvaise réponse, essayez encore !";
+        messageElement.style.color = "red";
+    }
+}
+
+// Fonction pour afficher le score
+function afficherScore() {
+    alert("Votre score actuel est : " + localStorage.getItem("score") + " points");
+}
+
+// Fonction pour retirer les gains (exemple : 100 points = 1€)
+function retirerGains() {
+    let points = parseInt(localStorage.getItem("score"));
+    let montant = points / 100; // 100 points = 1€
+
+    if (montant >= 1) {
+        alert("Vous pouvez retirer : " + montant.toFixed(2) + "€");
+        localStorage.setItem("score", 0); // Réinitialiser le score après le retrait
+    } else {
+        alert("Vous devez avoir au moins 100 points pour retirer.");
+    }
+}
