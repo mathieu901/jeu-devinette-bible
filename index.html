@@ -3,21 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Site de Parrainage</title>
+    <title>Connexion</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <h1>Gagne des récompenses avec le parrainage !</h1>
-        <p>Invite tes amis et gagne des points.</p>
-        
-        <h2>Ton lien de parrainage :</h2>
-        <p id="lien-parrainage" class="parrainage-link"></p>
-        <button onclick="copierLien()">Copier le lien</button>
-
-        <h2 id="compteur-filleuls">Filleuls : 0</h2>
+        <h1>Connexion</h1>
+        <form id="login-form">
+            <input type="text" id="username" placeholder="Nom d'utilisateur" required>
+            <input type="password" id="password" placeholder="Mot de passe" required>
+            <button type="submit">Se connecter</button>
+        </form>
+        <p>Pas encore de compte ? <a href="register.html">Inscris-toi</a></p>
+        <p id="error-message" class="error"></p>
     </div>
 
-    <script src="script.js"></script>
+    <script src="login.js"></script>
 </body>
 </html>
