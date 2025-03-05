@@ -3,98 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz - Jeu de Questions</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 50px;
-        }
-        #quiz-container {
-            max-width: 500px;
-            margin: auto;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-        }
-        button {
-            padding: 10px;
-            font-size: 16px;
-            margin: 5px;
-            cursor: pointer;
-        }
-    </style>
+    <title>Connexion</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Quiz - Jeu de Questions</h1>
-    <div id="quiz-container">
-        <p id="question"></p>
-        <div id="reponses"></div>
-        <p id="resultat"></p>
-        <button onclick="suivant()">Question suivante</button>
-        <button onclick="quitterJeu()">Quitter</button>
+    <div class="container">
+        <h1>Connexion</h1>
+        <form id="login-form">
+            <input type="text" id="username" placeholder="Nom d'utilisateur" required>
+            <input type="password" id="password" placeholder="Mot de passe" required>
+            <button type="submit">Se connecter</button>
+        </form>
+        <p>Pas encore de compte ? <a href="register.html">Inscris-toi</a></p>
+        <p id="error-message" class="error"></p>
     </div>
 
-    <script>
-        const questions = [
-            {
-                question: "Quel est le plus grand océan du monde ?",
-                options: ["Atlantique", "Pacifique", "Indien", "Arctique"],
-                reponse: "Pacifique"
-            },
-            {
-                question: "Quelle est la capitale de la France ?",
-                options: ["Madrid", "Berlin", "Londres", "Paris"],
-                reponse: "Paris"
-            },
-            {
-                question: "Combien font 5 × 6 ?",
-                options: ["30", "25", "20", "35"],
-                reponse: "30"
-            }
-        ];
-
-        let indexQuestion = 0;
-
-        function afficherQuestion() {
-            let q = questions[indexQuestion];
-            document.getElementById("question").innerText = q.question;
-            let reponsesDiv = document.getElementById("reponses");
-            reponsesDiv.innerHTML = "";
-
-            q.options.forEach(option => {
-                let bouton = document.createElement("button");
-                bouton.innerText = option;
-                bouton.onclick = () => verifierReponse(option);
-                reponsesDiv.appendChild(bouton);
-            });
-
-            document.getElementById("resultat").innerText = "";
-        }
-
-        function verifierReponse(reponse) {
-            if (reponse === questions[indexQuestion].reponse) {
-                document.getElementById("resultat").innerText = "Bonne réponse ! ✅";
-            } else {
-                document.getElementById("resultat").innerText = "Mauvaise réponse ❌";
-            }
-        }
-
-        function suivant() {
-            indexQuestion++;
-            if (indexQuestion < questions.length) {
-                afficherQuestion();
-            } else {
-                document.getElementById("quiz-container").innerHTML = "<h2>Quiz terminé ! 🎉</h2>";
-            }
-        }
-
-        function quitterJeu() {
-            window.location.href = "index.html"; // Retour à la page de connexion
-        }
-
-        afficherQuestion();
-    </script>
+    <script src="login.js"></script>
 </body>
 </html>
